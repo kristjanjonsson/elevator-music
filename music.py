@@ -11,7 +11,6 @@ def main():
     mixer = pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
 
     song = pygame.mixer.Sound('music/basketball.wav')
-    # song = pygame.mixer.Sound('music/song1.mp3')
 
     song.play()
 
@@ -42,8 +41,7 @@ def isRaining():
     lightRain = "Light rain"
     isRaining = weatherNow == rain or weatherNow == lightRain
 
-    #print isRaining
+    print isRaining
     return isRaining
-
-isRaining = isRaining()
-print isRaining
+    
+main()
