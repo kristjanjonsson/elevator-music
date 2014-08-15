@@ -17,7 +17,7 @@ def main():
 
     try:
         tasks = [
-            asyncio.async(stop_player(player, seconds=3)),
+            # asyncio.async(stop_player(player, seconds=3)),
             asyncio.async(player.play())
         ]
         loop.run_until_complete(asyncio.wait(tasks))
