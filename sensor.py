@@ -27,9 +27,7 @@ class Sensor:
         self.threshold = 100
 
     def get_light_sensor_reading(self):
-        self.last_reading = self.current_reading
-        self.current_reading = RCtime(18) # 18 refers to GPIO pin #18 on RPieading
-        return self.current_reading
+        return RCtime(18) # 18 refers to GPIO pin #18 on RPi
 
     def significant_change_since_last_reading(self):
         if (abs(self.current_reading - self.last_reading) > self.threshold):

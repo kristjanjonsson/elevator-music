@@ -14,9 +14,8 @@ def run_sensor(player):
     sensor = Sensor()
     start_time = datetime.now()
     while True:
-        print sensor.get_light_sensor_reading()
-        print 'difference', sensor.current_reading - sensor.last_reading
-        if sensor.current_reading - sensor.last_reading > 200:
+        print
+        if sensor.get_light_sensor_reading() < 1000:
             player.play()
             start_time = datetime.now()
 
