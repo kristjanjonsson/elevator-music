@@ -5,7 +5,7 @@ import trollius as asyncio
 
 
 from player import Player
-# from sensor import Sensor
+from sensor import Sensor
 
 
 # This function is just to test the stop and next features.
