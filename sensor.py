@@ -15,6 +15,7 @@ def RCtime(RCpin):
     # This takes about 1 millisecond per loop cycle
     while (GPIO.input(RCpin) == GPIO.LOW):
             reading += 1
+
     return reading
 
 class Sensor:
@@ -26,7 +27,9 @@ class Sensor:
         self.threshold = 100
 
     def get_light_sensor_reading(self):
-        return RCtime(18) # 18 refers to GPIO pin #18 on RPi
+        self.last_reading = self.current_reading
+        self.current_reading = RCtime(18) # 18 refers to GPIO pin #18 on RPieading
+        return self.current_reading
 
     def significant_change_since_last_reading(self):
         if (abs(self.current_reading - self.last_reading) > self.threshold):
