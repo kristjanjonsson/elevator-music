@@ -1,24 +1,38 @@
+from datetime import datetime
+
 from trollius import From
 import trollius as asyncio
 
+
 from player import Player
+# from sensor import Sensor
 
 
 # This function is just to test the stop and next features.
 @asyncio.coroutine
-def stop_player(player, seconds):
-    yield From(asyncio.sleep(seconds))
-    player.stop()
+def run_sensor(player, seconds):
+    sensor = Sensor()
+    start_time = datetime.now()
+    while True:
+        if sensor.significant_change_since_last_reading():
+            player.play()
+            start_time = datetime.now()
+
+        if (datetime.now() - start_time).seconds > 30 and player.is_playing():
+            player.stop()
 
 
 def main():
     player = Player()
+    player.play()
     loop = asyncio.get_event_loop()
 
     try:
         tasks = [
             # asyncio.async(stop_player(player, seconds=3)),
-            asyncio.async(player.play())
+            asyncio.async(player.init()),
+            asyncio.async(play_in(player, 3))
+
         ]
         loop.run_until_complete(asyncio.wait(tasks))
     finally:
