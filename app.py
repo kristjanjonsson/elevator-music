@@ -1,11 +1,17 @@
 import trollius as asyncio
 
-import player
+from player import Player
 
 
 def main():
+    player = Player()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(player.play())
+
+    try:
+        loop.run_until_complete(player.play())
+    finally:
+        player.stop()
+        loop.close()
 
 
 if __name__ == "__main__":

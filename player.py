@@ -4,26 +4,27 @@ import trollius as asyncio
 from playlist import Playlist
 
 
-@asyncio.coroutine
-def play_song(song):
-    """Plays a song and returns the process that's playing it."""
-    proc = yield From(asyncio.create_subprocess_exec(*['mpg321', song]))
-    raise Return(proc)
+class Player:
 
+    def __init__(self):
+        self.current_song_proc = None
+        self.playlist = Playlist()
 
-@asyncio.coroutine
-def play():
-    """Plays the playlist forever!!!"""
-    playlist = Playlist()
-    while True:
-        song = playlist.next_song()
-        song_proc = yield From(play_song(song))
+    def is_playing(self):
+        return self.current_song_proc and not self.current_song_proc.returncode
 
-        yield From(song_proc.wait())
+    def stop(self):
+        if self.is_playing():
+            self.current_song_proc.terminate()
 
-        # This is how we stopz it. We killz it.
-        # yield From(song_proc.kill())
+    @asyncio.coroutine
+    def play_song(self, song):
+        self.current_song_proc = yield From(asyncio.create_subprocess_exec(*['mpg321', song]))
 
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(play())
+    @asyncio.coroutine
+    def play(self):
+        """Plays the playlist forever!!!"""
+        while True:
+            song = self.playlist.next_song()
+            yield From(self.play_song(song))
+            yield From(self.current_song_proc.wait())
