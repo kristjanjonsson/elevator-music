@@ -30,11 +30,16 @@ class Player:
     def play_song(self, song):
         self.current_song_proc = yield From(asyncio.create_subprocess_exec(*['mpg321', song]))
 
-    @asyncio.coroutine
     def play(self):
         """Plays the playlist forever!!!"""
         self.playlist_playing = True
-        while self.playlist_playing:
-            song = self.playlist.next_song()
-            yield From(self.play_song(song))
-            yield From(self.current_song_proc.wait())
+
+    @asyncio.coroutine
+    def init(self):
+        while True:
+            while self.playlist_playing:
+                song = self.playlist.next_song()
+                yield From(self.play_song(song))
+                yield From(self.current_song_proc.wait())
+
+            yield From(asyncio.sleep(0.2))
