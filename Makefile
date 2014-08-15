@@ -5,5 +5,6 @@ bootstrap-mac:
 
 bootstrap-raspberry:
 	sudo apt-get install mpg321
+	pip install virtualenv
 	virtualenv venv
 	. venv/bin/activate && pip install trollius
