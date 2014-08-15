@@ -10,10 +10,11 @@ from player import Player
 
 # This function is just to test the stop and next features.
 @asyncio.coroutine
-def run_sensor(player, seconds):
+def run_sensor(player):
     sensor = Sensor()
     start_time = datetime.now()
     while True:
+        print sensor.get_light_sensor_reading()
         if sensor.significant_change_since_last_reading():
             player.play()
             start_time = datetime.now()
@@ -31,7 +32,7 @@ def main():
         tasks = [
             # asyncio.async(stop_player(player, seconds=3)),
             asyncio.async(player.init()),
-            asyncio.async(play_in(player, 3))
+            asyncio.async(run_sensor(player))
 
         ]
         loop.run_until_complete(asyncio.wait(tasks))
