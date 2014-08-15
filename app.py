@@ -12,10 +12,16 @@ from sensor import Sensor
 @asyncio.coroutine
 def run_sensor(player):
     sensor = Sensor()
+    last_reading = sensor.get_light_sensor_reading()
+    current_reading = sensor.get_light_sensor_reading()
+
     start_time = datetime.now()
     while True:
-        print
-        if sensor.get_light_sensor_reading() < 1000:
+        reading = sensor.get_light_sensor_reading()
+        print reading, last_reading, current_reading
+        last_reading = current_reading
+        current_reading = reading
+        if current_reading - last_reading > 100:
             player.play()
             start_time = datetime.now()
 
