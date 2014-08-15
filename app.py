@@ -22,6 +22,8 @@ def run_sensor(player):
         if (datetime.now() - start_time).seconds > 30 and player.is_playing():
             player.stop()
 
+        yield From(asyncio.sleep(0.1))
+
 
 def main():
     player = Player()
